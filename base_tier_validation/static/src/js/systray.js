@@ -159,7 +159,7 @@ odoo.define("tier_validation.systray", function (require) {
         },
     });
 
-    SystrayMenu.Items.push(ReviewMenu);
+    // SystrayMenu.Items.push(ReviewMenu);
 
     return ReviewMenu;
 });
