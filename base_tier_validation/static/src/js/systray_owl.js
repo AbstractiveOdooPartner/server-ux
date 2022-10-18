@@ -1,36 +1,43 @@
 /** @odoo-module **/
 
-const { Component, useState } = owl;
+const { Component, useState, useRef, onWillDestroy } = owl;
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { useService } from "@web/core/utils/hooks";
-
-
-export class ReviewMenuPreview extends Component {
-    static template = "tier.validation.ReviewMenuPreview";
-}
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 
 export class ReviewMenu extends Component {
     static template = "tier.validation.ReviewMenu";
-    static components = { ReviewMenuPreview };
+    static components = { Dropdown, DropdownItem };
 
     setup() {
         this.orm = useService("orm");
-        this.state = useState({ reviewCounter: 0, reviews: {} });
+        this.state = useState({ isOpen: false, reviewCounter: 0, reviews: {} });
+        this.rootRef = useRef('root');
 
         // Don't know what this is supposed to do exactly
         // this.call("bus_service", "addChannel", channel);
         // this.call("bus_service", "startPolling");
         // this.call("bus_service", "onNotification", this, this._updateReviewPreview);
+
+        document.addEventListener('click', this.onClickCaptureGlobal.bind(this), true);
+        onWillDestroy(() => {
+            document.removeEventListener('click', this.onClickCaptureGlobal.bind(this), true);
+        });
     }
 
-    onClick() {
+    onClickToggler(ev) {
         this._getReviewData();
+        this.state.isOpen = !this.state.isOpen;
     }
 
-    increment() {
-        this.state.value++;
+    onClickCaptureGlobal(ev) {
+        if (!this.rootRef.el || this.rootRef.el.contains(ev.target)) {
+            return;
+        }
+        this.state.isOpen = false;
     }
 
     ///////////////////////

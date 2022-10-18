@@ -1,16 +1,11 @@
 // Navbar icon and dropdown
-.o_tier_navbar_item {
+.o_tier_systray_item {
     > a {
-        opacity: 1;
         > i {
             font-size: larger;
         }
     }
     &.o_no_notification > a {
-        opacity: 0.5;
-        > i {
-            transform: translateY(0px);
-        }
         .o_notification_counter {
             display: none;
         }
@@ -116,7 +111,13 @@
             top: 10%;
         }
         .o_tier_systray_dropdown {
-            position: relative;
+            position: fixed;
+            width: 100%;
+            max-height: none;
+            top: 46px;
+            left: 0;
+            right: 0;
+            bottom: 0;
             .o_tier_systray_dropdown_top {
                 padding: 5px;
             }
